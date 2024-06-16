@@ -1,31 +1,34 @@
 package complexity;
 
+import java.util.Scanner;
+
 public class Array224B {
     public static void main(String[] args){
-        int n = 7;
-        int k = 4;
-//        int[] a = {1,1,2,2,3,3,4,5};
-//        int[] a = {1,2,2,3};
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int k = sc.nextInt();
+        int[] a = new int[n];
+        for(int i = 0; i < n; i++){
+            a[i] = sc.nextInt();
+        }
+        int r = 0;
+        int distinctCount = 0;
+        int[] fre = new int[100001];
 
-        int[] a = {4, 7, 7, 4, 7, 4, 7};
-        int l = 0, r = 0;
-        int distinctCount = 1;
-        int flag = 0;
-        for(int i = 1; i < n; i++){
-            int j = 0;
-            for(j = 0; j < i;j++){
-                if(a[i] == a[j]) break;
+        for(int l = 0; l < n; l++){
+            while(r < a.length && distinctCount < k){
+                if(fre[a[r]] == 0) distinctCount += 1;
+                fre[a[r]] += 1;
+                r += 1;
             }
-            if(i==j) distinctCount++;
-            if (distinctCount == 2) l = j;
             if(distinctCount == k) {
-                System.out.println(l + " " + (i+1));
-                flag=1;
-                break;
+                fre[a[l]] -= 1;
+                if (fre[a[l]] == 0) {
+                    System.out.printf("%d %d", l + 1, r);
+                    return;
+                }
             }
         }
-        if(flag==0) {
-            System.out.println("-1 -1");
-        }
+        System.out.println("-1 -1");
     }
 }
